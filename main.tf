@@ -186,13 +186,20 @@ resource "oci_ons_subscription" "budget_alert_subscription" {
 # Event alert to eventually hit a HTTP endpoint and kill all resources when $1 is spent
 resource "oci_events_rule" "budget_alert_rule" {
   compartment_id = oci_identity_compartment.vps.id
-  display_name   = "BudgetAlertRule"
+  display_name   = "budget_alert_rule"
   is_enabled     = true
 
-  # TODO: Confirm this is the format received
+  # Define the condition to match the event type and budgetId
   condition = jsonencode({
+    "eventType" = {
+      "equals" = "com.oraclecloud.budgets.createtriggeredalert"
+    },
     "data" : {
-      "budgetThreshold" : "1" # when the budget exceeds 10%
+      "additionalDetails" : {
+        "budgetId" = {
+          "matches" = oci_budget_budget.free_budget.id
+        }
+      }
     }
   })
 
