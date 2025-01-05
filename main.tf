@@ -188,17 +188,14 @@ resource "oci_events_rule" "budget_alert_rule" {
   compartment_id = oci_identity_compartment.vps.id
   display_name   = "budget_alert_rule"
   is_enabled     = true
+  description    = "Send an alert that will destroy resources when budget alerts"
 
   # Define the condition to match the event type and budgetId
   condition = jsonencode({
-    "eventType" = {
-      "equals" = "com.oraclecloud.budgets.createtriggeredalert"
-    },
+    "eventType" : "com.oraclecloud.budgets.createtriggeredalert",
     "data" : {
       "additionalDetails" : {
-        "budgetId" = {
-          "matches" = oci_budget_budget.free_budget.id
-        }
+        "budgetId" : oci_budget_budget.free_budget.id
       }
     }
   })
