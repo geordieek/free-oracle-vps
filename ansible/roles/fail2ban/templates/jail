@@ -1,0 +1,19 @@
+[DEFAULT]
+banaction = iptables-allports
+maxretry = 3
+bantime = 600
+findtime  = 300
+ignoreip = 127.0.0.1/8 ::1
+action = iptables-allports[chain="FORWARD"] cloudflare
+destemail =
+sender =
+
+[sshd]
+enabled = true
+port = {{ ports.ssh }}
+filter = sshd
+
+[common]
+enabled = true
+port = {{ ports.http }}, {{ ports.https }}
+filter = common

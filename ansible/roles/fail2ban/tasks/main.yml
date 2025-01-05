@@ -1,0 +1,26 @@
+- name: Install packages
+  import_role:
+    name: common_roles/install_latest
+  vars:
+    packages: fail2ban
+
+- name: Copy config files
+  template:
+    src: "{{ item.template }}"
+    dest: "/etc/fail2ban/{{ item.conf_file }}"
+    mode: 0644
+  with_items:
+    - template: "cloudflare_action"
+      conf_file: "action.d/cloudflare.local"
+    - template: "mail_action"
+      conf_file: "action.d/sendmail-common.local"
+    - template: "common_filter"
+      conf_file: "filter.d/common"
+    - template: "jail"
+      conf_file: "jail.local"
+
+- name: Enable and restart fail2ban
+  service:
+    name: fail2ban
+    enabled: true
+    state: restarted

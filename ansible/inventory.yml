@@ -1,0 +1,19 @@
+all:
+  hosts:
+    vps:
+      ansible_host: "{{ ip | default(domain) }}"
+      ansible_ssh_private_key_file: "{{ ssh_key | default('~/.ssh/id_rsa') }}"
+
+  vars:
+    root_user: "ubuntu"
+    username: "geordie"
+    create_remote_user: true
+    common_backup_dir: "/home/{{ username }}/backups"
+    service:
+      umami:
+        subdomain: "umami"
+        port: 85
+    ports:
+      ssh: 2222
+      http: 80
+      https: 443

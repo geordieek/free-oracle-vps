@@ -1,0 +1,26 @@
+- name: Create User
+  vars:
+    has_root_access: false
+  block:
+    - name: Check root access
+      block:
+        - name: Check SSH access
+          raw: ssh -o BatchMode=yes -o ConnectTimeout=5 -i "{{ ansible_ssh_private_key_file }}" "root@{{ ansible_host }}" 'echo ok'
+          register: root_ssh
+          ignore_errors: true
+          failed_when: false
+          changed_when: true
+          delegate_to: localhost
+
+        - set_fact:
+            has_root_access: true
+          when: "root_ssh.rc == 0"
+
+    - name: Run tasks
+      when: has_root_access and create_remote_user
+      block:
+        - name: Create user
+          import_tasks: create.yml
+
+        - name: Sudo and SSH
+          import_tasks: priviledges.yml

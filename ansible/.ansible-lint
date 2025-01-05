@@ -1,0 +1,8 @@
+---
+skip_list:
+  - yaml[document-start]
+  - fqcn
+  - latest[git]
+  - no-handler
+  - name
+  - role-name[path]

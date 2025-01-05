@@ -1,0 +1,37 @@
+- name: Install packages
+  import_role:
+    name: common_roles/install_latest
+  vars:
+    packages:
+      - "git"
+      - "zsh"
+      - "stow"
+
+- name: Clone dotfiles
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "/home/{{ username }}/dotfiles"
+    track_submodules: true
+    force: true
+
+- name: Set zsh as default shell
+  become: true
+  user:
+    name: "{{ item }}"
+    shell: /usr/bin/zsh
+  with_items:
+    - "{{ username }}"
+    - "{{ root_user }}"
+
+- name: Get configs to unstow
+  command: "ls /home/{{ username }}/dotfiles"
+  register: dot_dirs
+  changed_when: true
+
+- name: Unstow dotfiles
+  args:
+    chdir: "/home/{{ username }}/dotfiles"
+  command:
+    cmd: "stow -R {{ item }}"
+  loop: "{{ dot_dirs.stdout_lines }}"
+  changed_when: true

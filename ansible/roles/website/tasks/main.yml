@@ -1,0 +1,16 @@
+- name: Create and chown website dir
+  file:
+    path: "/home/{{ username }}/website"
+    state: directory
+    mode: 0755
+
+- name: Sample index
+  copy:
+    dest: "/home/{{ username }}/website/index.html"
+    content: |
+      <body>
+        <h1>
+          Hello World!
+        </h1>
+      </body>
+    mode: 0644

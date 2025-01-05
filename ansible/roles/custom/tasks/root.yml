@@ -1,0 +1,21 @@
+- name: Copy for root user
+  copy:
+    src: "/home/{{ username }}/dotfiles"
+    dest: "/{{root_user}/"
+    owner: "{{root_user}"
+    group: "{{root_user}}"
+    remote_src: true
+    mode: 0755
+
+- name: Get configs to unstow
+  command: "ls /{{root_user}}/dotfiles"
+  register: conf_dirs
+  changed_when: true
+
+- name: Unstow dotfiles
+  args:
+    chdir: "/{{root_user}}/dotfiles"
+  command:
+    cmd: "stow -R {{ item }}"
+  loop: "{{ conf_dirs.stdout_lines }}"
+  changed_when: true

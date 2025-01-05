@@ -1,0 +1,62 @@
+- name: Create user
+  hosts: vps
+  remote_user: "{{root_user}}"
+  gather_facts: no
+  vars_files:
+    - .env.yml
+  roles:
+    - role: user
+      tags:
+        - user
+
+- name: Server setup
+  hosts: vps
+  remote_user: "{{ username }}"
+  vars_files:
+    - .env.yml
+
+  roles:
+    - role: housekeeping
+      become: true
+      tags:
+        - housekeeping
+
+    - role: custom
+      tags:
+        - custom
+
+    - role: website
+      tags:
+        - website
+
+    - role: analytics
+      tags:
+        - analytics
+
+    - role: onion
+      become: true
+      tags:
+        - onion
+        - website
+
+    - role: fail2ban
+      become: true
+      tags:
+        - fail2ban
+        - sec
+
+    # - role: nginx
+    #   become: true
+    #   tags:
+    #     - nginx
+
+    - role: harden
+      become: true
+      tags:
+        - harden
+        - sec
+
+    - role: welcome
+      become: true
+      tags:
+        - welcome

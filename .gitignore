@@ -146,5 +146,8 @@ id_rsa.pub
 # Ignore Ansible vault files and vars
 *.vault
 ansible/vars/*
+.env.yml
+./*.vim
+ssh_keys/
 # Allow Ansible example vars
 !ansible/vars/example.yml

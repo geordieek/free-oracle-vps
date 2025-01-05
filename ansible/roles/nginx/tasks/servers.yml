@@ -1,0 +1,42 @@
+- name: Clear existing servers
+  block:
+    - name: Rm sites-enabled
+      file:
+        state: absent
+        path: "/etc/nginx/sites-enabled"
+
+    - name: Mkdir sites-enabled
+      file:
+        state: directory
+        path: "/etc/nginx/sites-enabled"
+        mode: 0755
+
+- name: Get onion address
+  slurp:
+    src: "/var/lib/tor/hidden_service/hostname"
+  register: onion_address
+
+- name: Config website server
+  template:
+    src: "nginx-website"
+    dest: "/etc/nginx/sites-enabled/website"
+    mode: 0644
+
+- name: Config proxy server for services
+  vars:
+    subdom: "{{ item.subdomain }}"
+    port: "{{ item.port }}"
+  template:
+    src: nginx-service
+    dest: "/etc/nginx/sites-enabled/{{ item.subdomain }}"
+    mode: 0644
+  loop:
+    - "{{ service.umami }}"
+  loop_control:
+    label: "{{ item.subdomain }}"
+
+- name: Enable and restart nginx
+  service:
+    name: nginx
+    enabled: true
+    state: restarted
