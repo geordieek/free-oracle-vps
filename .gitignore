@@ -134,3 +134,5 @@ dist
 terraform.tfstate
 terraform.tfstate.backup
 *.tfvars
+# Allow Terraform example tfvars
+!example.tfvars
