@@ -1,0 +1,8 @@
+- name: General setup incl. users
+  import_playbook: playbooks/setup.yml
+
+- name: Install general tools
+  import_playbook: playbooks/tools.yml
+
+- name: Setup basic security measures
+  import_playbook: playbooks/security.yml

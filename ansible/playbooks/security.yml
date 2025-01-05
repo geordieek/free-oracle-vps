@@ -1,0 +1,61 @@
+- name: Basic security
+  hosts: all
+  vars_files:
+    - ../vars/main.yml
+  become: true
+  tasks:
+    - name: Ensure ufw is installed
+      apt:
+        name: ufw
+        state: present
+
+    - name: Gather facts about ufw
+      command: ufw status
+      register: ufw_status
+      changed_when: false
+      failed_when: false
+
+    - name: Turn on ufw logging
+      community.general.ufw:
+        logging: "on"
+
+    - name: Limit SSH attempts
+      community.general.ufw:
+        rule: limit
+        port: 22
+        proto: tcp
+      loop:
+        - 22 # OpenSSH
+        - 80 # HTTP
+        - 443 # HTTPS
+        - 2222
+
+    - name: Ensure OpenSSH, HTTP, and HTTPS are allowed in the firewall
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - 22 # OpenSSH
+        - 80 # HTTP
+        - 443 # HTTPS
+
+    - name: Set default incoming policy to deny
+      ufw:
+        default: deny
+        direction: incoming
+
+    - name: Set default outgoing policy to allow
+      ufw:
+        default: allow
+        direction: outgoing
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+
+    - name: Enable the firewall
+      ufw:
+        state: enabled
+        policy: deny
+      become: true

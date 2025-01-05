@@ -1,0 +1,5 @@
+admin_user: "<your-root-user-name>"
+vps_public_ip: "<your-vps-public-ip>"
+ssh_public_key: "{{ lookup('file', '<path-to-your-ssh-pub-key>') }}"
+server_name: "my-vps"
+webserver_package: "nginx"

@@ -136,3 +136,15 @@ terraform.tfstate.backup
 *.tfvars
 # Allow Terraform example tfvars
 !example.tfvars
+
+# Ignore private SSH keys
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# Ignore Ansible vault files and vars
+*.vault
+ansible/vars/*
+# Allow Ansible example vars
+!ansible/vars/example.yml
