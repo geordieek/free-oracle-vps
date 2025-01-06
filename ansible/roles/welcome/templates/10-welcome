@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 welcome_msg="-- Welcome to {{ domain }} --"
-border_length=${#welcome_msg}
+border_length=$"-- Welcome to {{ domain }} --"
 
 border=$(printf '=%.0s' "$(seq 1 "$border_length")")
 
