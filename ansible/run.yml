@@ -1,6 +1,6 @@
 - name: Create user
   hosts: vps
-  remote_user: "{{root_user}}"
+  remote_user: root
   gather_facts: no
   vars_files:
     - .env.yml
@@ -14,8 +14,17 @@
   remote_user: "{{ username }}"
   vars_files:
     - .env.yml
+  tags: setup
 
   roles:
+    # Note: This will convert SSH port to 2222, it needs to run early as later services depend on it
+    # it will also stop root access, meaning the full run.yml script will cease to work
+    - role: harden
+      become: true
+      tags:
+        - harden
+        - sec
+
     - role: housekeeping
       become: true
       tags:
@@ -45,16 +54,10 @@
         - fail2ban
         - sec
 
-    # - role: nginx
-    #   become: true
-    #   tags:
-    #     - nginx
-
-    - role: harden
+    - role: nginx
       become: true
       tags:
-        - harden
-        - sec
+        - nginx
 
     - role: welcome
       become: true
