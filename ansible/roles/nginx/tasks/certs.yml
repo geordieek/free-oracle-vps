@@ -1,5 +1,6 @@
 - name: Run cert script # noqa: yaml
-  command: "/usr/bin/certbot --nginx -n --agree-tos --redirect --expand --email {{ email }} --domains {{ domain }}"
+  # If you add more sites, you can add them to this script here to get certs, you can also run the script directly on server
+  command: "/usr/bin/certbot --nginx -n --agree-tos --redirect --expand --email {{ email }} --domains {{ domain }},umami.{{ domain }}"
   changed_when: true
 
 - name: Keep certs updated

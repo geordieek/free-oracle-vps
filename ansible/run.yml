@@ -14,7 +14,8 @@
   remote_user: "{{ username }}"
   vars_files:
     - .env.yml
-  tags: setup
+  tags:
+    - setup
 
   roles:
     # Note: This will convert SSH port to 2222, it needs to run early as later services depend on it

@@ -8,6 +8,11 @@
   copy:
     dest: "/home/{{ username }}/website/index.html"
     content: |
+      <head>
+        <title>Your Website</title>
+        <!-- Umami script for analytics goes here -->
+        <script defer src="https://umami.{{domain}}/script.js" data-website-id="your-data-website-id"></script>
+      </head>
       <body>
         <h1>
           Hello World!
