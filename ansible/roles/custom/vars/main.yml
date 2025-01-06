@@ -1,22 +1,20 @@
 basic_packages:
+  - gpg
+  - sudo
   - bat
   - curl
-  - delta
   - docker
   - docker-compose
-  - eza
   - fzf
   - git
   - htop
   - libjpeg-dev
   - libxtst-dev
-  - lua5.3
   - lsof
   - mmv
   - python3-pip
   - ripgrep
   - rsync
-  - starship
   - stow
   - tree
   - ufw
