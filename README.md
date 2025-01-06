@@ -42,14 +42,14 @@ bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShe
 
 - You will get kicked out
 - Remove the host from ~/.ssh/known_hosts, its key fingerprint will have changed with debian OS re-install, so it'll say something malicious is happening
-- Copy ssh pub key into server with `ssh-copy-id -i ~/.ssh/id_rsa.pub root@168.138.4.151` (replace your ssh location if needed)
+- Copy ssh pub key into server with `ssh-copy-id -i ~/.ssh/id_rsa.pub root@<your-ip-address>` (replace your ssh location if needed)
 - You should now be able to connect as `root` which is needed for Ansible setup
 
 ## Troubleshooting
 
 ### DNS
 
-Lookup dns with `dig` eg `dig geordie.dev` to check if it’s resolved, if [dns checker](TODO) shows right value but dig doesn’t, try resetting dns cache
+Lookup dns with `dig` eg `dig your-domain.dev` to check if it’s resolved, if [dns checker](TODO) shows right value but dig doesn’t, try resetting dns cache
 
 On macOS:
 `sudo killall -HUP mDNSResponder`
@@ -57,7 +57,7 @@ On Linux:
 `sudo systemd-resolve --flush-caches`
 
 You can also try with a public resolver, eg.
-`dig @8.8.8.8 geordie.dev` to check with google
+`dig @8.8.8.8 your-domain.dev` to check with google
 
 Remember that your router can cache DNS as well, so it can take a while to propagate.
 
