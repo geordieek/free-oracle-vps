@@ -1,15 +1,15 @@
 # oci-free-vps
 
+### TODO:
+
+- Write some notes on `sshd`, `systemctl` & `ufw`
+- Organise terraform into its own folder
+
 Infrastructure and configuration for an Oracle Cloud free tier VPS, running Debian.
 
 Terraform built upon [this repo](https://github.com/Fitzsimmons/oracle-always-free-vps?tab=readme-ov-file).
 
 Ansible built upon [this repo](https://github.com/EricDriussi/host-your-own?tab=readme-ov-file).
-
-### TODO:
-
-- Write some notes on `sshd`, `systemctl` & `ufw`
-- Organise terraform into its own folder
 
 ## Ansible
 
