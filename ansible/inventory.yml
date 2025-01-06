@@ -3,11 +3,12 @@ all:
     vps:
       ansible_host: "{{ ip | default(domain) }}"
       ansible_ssh_private_key_file: "{{ ssh_key | default('~/.ssh/id_rsa') }}"
+      ansible_ssh_pass: "{{ssh_pass}}"
+      ansible_ssh_port: 2222 # NOTE: Comment this out for initial setup, but after harden has run, use it
 
   vars:
-    root_user: "ubuntu"
     username: "geordie"
-    create_remote_user: true
+    create_remote_user: false # NOTE: Set this to true initially, then once user is configured, false, we don't need to create again
     common_backup_dir: "/home/{{ username }}/backups"
     service:
       umami:

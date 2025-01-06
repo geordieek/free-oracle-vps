@@ -6,9 +6,11 @@ domain: "your.domain.com"
 # Email address for SSL cert and Gitea instance
 email: "your@email.address"
 
+# Used when connecting to server with password-based SSH instead of key-based
+ssh_pass: "MoeClub.org" # Default password for SSH after installing debian from MoeClub
+
 nextcloud_username: "admin_user"
 nextcloud_password: "admin_pwd"
-
 # Uncomment and set your own, if left blank, there is a default, but it won't work if you run with tags
 # ssh_key: "~/.ssh/[YOUR_PRIVATE_KEY]"
 
