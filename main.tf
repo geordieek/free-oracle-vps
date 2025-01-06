@@ -13,7 +13,7 @@ data "oci_identity_availability_domains" "test" {
 resource "oci_core_vcn" "vps" {
   compartment_id = oci_identity_compartment.vps.id
   cidr_blocks    = [var.cidr] # Define the network range (e.g., 10.0.0.0/16)
-  display_name   = "vps"
+  display_name   = "my_vps_vcn"
   dns_label      = "vps" # Short DNS label for internal resolution
 }
 
@@ -23,14 +23,14 @@ resource "oci_core_internet_gateway" "vps" {
   vcn_id         = oci_core_vcn.vps.id
   route_table_id = oci_core_vcn.vps.default_route_table_id # Use default route table
   enabled        = true
-  display_name   = "vps"
+  display_name   = "my_vps_internet_gateway"
 }
 
 # Define a route table to direct internet traffic through the Internet Gateway
 resource "oci_core_route_table" "vps" {
   compartment_id = oci_identity_compartment.vps.id
   vcn_id         = oci_core_vcn.vps.id
-  display_name   = "vps"
+  display_name   = "my_vps_route_rable"
 
   # Add a route rule for internet traffic
   route_rules {
@@ -54,6 +54,17 @@ resource "oci_core_security_list" "vps" {
     tcp_options {
       min = 22
       max = 22
+    }
+  }
+  # Allow incoming SSH traffic (port 2222)
+  ingress_security_rules {
+    protocol    = 6           # TCP
+    source      = "0.0.0.0/0" # Any IP address
+    source_type = "CIDR_BLOCK"
+    stateless   = false
+    tcp_options {
+      min = 2222
+      max = 2222
     }
   }
 
