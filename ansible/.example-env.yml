@@ -6,7 +6,7 @@ domain: "your.domain.com"
 # Email address for SSL cert and Gitea instance
 email: "your@email.address"
 
-# Used when connecting to server with password-based SSH instead of key-based
+# Used when connecting to server with password-based SSH instead of key-based, note passwordless auth is removed by harden role
 ssh_pass: "MoeClub.org" # Default password for SSH after installing debian from MoeClub
 
 nextcloud_username: "admin_user"

@@ -3,7 +3,7 @@ all:
     vps:
       ansible_host: "{{ ip | default(domain) }}"
       ansible_ssh_private_key_file: "{{ ssh_key | default('~/.ssh/id_rsa') }}"
-      ansible_ssh_pass: "{{ssh_pass}}"
+      ansible_ssh_pass: "{{ssh_pass}}" # Used when connecting to server with password-based SSH instead of key-based
       ansible_ssh_port: 2222 # NOTE: Comment this out for initial setup, but after harden has run, use it
 
   vars:
