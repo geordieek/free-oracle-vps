@@ -23,7 +23,7 @@ You can use the --tags flag, to run only the selected roles (tags):
 
 ## Terraform
 
-- Currently terraform needs to be run from root, eventually it will go into a terraform folder.
+Currently terraform needs to be run from root, eventually it will go into a terraform folder.
 
 ## Debian Install
 
@@ -40,9 +40,10 @@ bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShe
 // default pass MoeClub.org
 ```
 
-- You will get kicked out
+- Once Debian has finished installing, you will get kicked out
 - Remove the host from ~/.ssh/known_hosts, its key fingerprint will have changed with debian OS re-install, so it'll say something malicious is happening
 - Copy ssh pub key into server with `ssh-copy-id -i ~/.ssh/id_rsa.pub root@<your-ip-address>` (replace your ssh location if needed)
+- If asked for a password and you used above script, it is `MoeClub.org`
 - You should now be able to connect as `root` which is needed for Ansible setup
 
 ## Troubleshooting
