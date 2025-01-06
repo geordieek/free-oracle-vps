@@ -3,9 +3,10 @@
     name: docker
     state: present
 
-- name: Create user {{ username }}
+- name: Ensure user {{ username }} exists
   user:
     name: "{{ username }}"
+    state: present
     groups:
       - sudo
       - docker

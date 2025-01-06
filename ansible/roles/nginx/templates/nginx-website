@@ -3,7 +3,7 @@ server {
     listen [::]:{{ ports.http }} default_server ;
     server_name {{ domain }} ;
     root /home/{{ username }}/website ;
-    index index.html index.htm index.nginx-ubuntu.html ;
+    index index.html index.htm index.nginx-debian.html ;
     add_header Onion-Location http://{{ (onion_address.content | b64decode).strip() }}$request_uri;
 
     location / {
@@ -29,7 +29,7 @@ server {
     listen 127.0.0.1:{{ ports.http }} ;
     server_name {{ (onion_address.content | b64decode).strip() }} ;
     root /home/{{ username }}/website ;
-    index index.html index.htm index.nginx-ubuntu.html ;
+    index index.html index.htm index.nginx-debian.html ;
 
     location / {
         try_files $uri $uri/ =404 ;

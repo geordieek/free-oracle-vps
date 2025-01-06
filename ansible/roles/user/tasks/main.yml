@@ -2,6 +2,11 @@
   vars:
     has_root_access: false
   block:
+    - name: Ensure sudo is installed
+      apt:
+        name: sudo
+        state: present
+
     - name: Check root access
       block:
         - name: Check SSH access
