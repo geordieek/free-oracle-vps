@@ -19,7 +19,7 @@
 
         - set_fact:
             has_root_access: true
-          when: "root_ssh.rc == 0"
+          when: 'root_ssh.rc == 0'
 
     - name: Run tasks
       when: has_root_access and create_remote_user
@@ -28,4 +28,4 @@
           import_tasks: create.yml
 
         - name: Sudo and SSH
-          import_tasks: priviledges.yml
+          import_tasks: privileges.yml

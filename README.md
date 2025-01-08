@@ -7,9 +7,7 @@
 
 Infrastructure and configuration for an Oracle Cloud free tier VPS, running Debian.
 
-Terraform built upon [this repo](https://github.com/Fitzsimmons/oracle-always-free-vps?tab=readme-ov-file).
-
-Ansible built upon [this repo](https://github.com/EricDriussi/host-your-own?tab=readme-ov-file).
+.
 
 ## Ansible
 
@@ -27,7 +25,7 @@ Currently terraform needs to be run from root, eventually it will go into a terr
 
 ## Debian Install
 
-This relies on a Debian install which isn't offered on Oracle. 
+This relies on a Debian install which isn't offered on Oracle.
 
 - First provision an Ubuntu instance.
 - ssh in as `ubuntu` user
@@ -50,7 +48,7 @@ bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShe
 
 ### DNS
 
-Lookup dns with `dig` eg `dig your-domain.dev` to check if it’s resolved, if [dns checker](TODO) shows right value but dig doesn’t, try resetting dns cache
+Lookup dns with `dig` eg `dig your-domain.dev` to check if it’s resolved, if [dns checker](https://dnschecker.org) shows right value but `dig` doesn’t, try resetting dns cache with the following commands:
 
 On macOS:
 `sudo killall -HUP mDNSResponder`
@@ -69,4 +67,8 @@ Remember that your router can cache DNS as well, so it can take a while to propa
 - After `harden` role is run, you will not be able to ssh in as root anymore, you will need to ssh in as `username` you set, on port 2222.
 - Make sure your infrastructure allows connecting on port 22 to begin with and port 2222 to support post-harden settings.
 
+## Credits
 
+Terraform built upon [this repo](https://github.com/Fitzsimmons/oracle-always-free-vps?tab=readme-ov-file) by @Fitzsimmons.
+
+Ansible built upon [this repo](https://github.com/EricDriussi/host-your-own?tab=readme-ov-file) by @EricDriussi.
