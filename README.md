@@ -1,13 +1,14 @@
-# oci-free-vps
+# Oracle Cloud Free VPS
 
-### TODO:
+Terraform infrastructure as code and Ansible configuration for an Oracle Cloud free tier VPS, running Debian.
 
-- Write some notes on `sshd`, `systemctl` & `ufw`
-- Organise terraform into its own folder
+The configuration includes:
 
-Infrastructure and configuration for an Oracle Cloud free tier VPS, running Debian.
-
-.
+- Automated regular maintenance
+- Automated SSL certs
+- Analytics with Umami
+- Hardening: SSH, NGINX, firewall, fail2ban.
+- General software
 
 ## Ansible
 
@@ -21,7 +22,7 @@ You can use the --tags flag, to run only the selected roles (tags):
 
 ## Terraform
 
-Currently terraform needs to be run from root, eventually it will go into a terraform folder.
+Run terraform commands from terraform folder.
 
 ## Debian Install
 
@@ -46,6 +47,14 @@ bash <(wget --no-check-certificate -qO- 'https://moeclub.org/attachment/LinuxShe
 
 ## Troubleshooting
 
+### Provisioning
+
+You can get a nice VPS on the Oracle free tier, but they never have capacity for it. There is a `retry_script.sh` that will help you continually retry `terraform apply`, but your best bet is to go PAYG and use budget alerts in this template. The VPS is still free, they just do not apply the same limited capacity limits.
+
+### Server
+
+There are some general server commands you may find useful in `CLI_CHEATSHEET.MD`
+
 ### DNS
 
 Lookup dns with `dig` eg `dig your-domain.dev` to check if it’s resolved, if [dns checker](https://dnschecker.org) shows right value but `dig` doesn’t, try resetting dns cache with the following commands:
@@ -67,8 +76,13 @@ Remember that your router can cache DNS as well, so it can take a while to propa
 - After `harden` role is run, you will not be able to ssh in as root anymore, you will need to ssh in as `username` you set, on port 2222.
 - Make sure your infrastructure allows connecting on port 22 to begin with and port 2222 to support post-harden settings.
 
+## TODO:
+
+- Write some notes on `sshd`, `systemctl` & `ufw`
+- Organise terraform into its own folder
+
 ## Credits
 
-Terraform built upon [this repo](https://github.com/Fitzsimmons/oracle-always-free-vps?tab=readme-ov-file) by @Fitzsimmons.
+Terraform based on [this repo](https://github.com/Fitzsimmons/oracle-always-free-vps?tab=readme-ov-file) by @Fitzsimmons.
 
-Ansible built upon [this repo](https://github.com/EricDriussi/host-your-own?tab=readme-ov-file) by @EricDriussi.
+Ansible based on [this repo](https://github.com/EricDriussi/host-your-own?tab=readme-ov-file) by @EricDriussi.

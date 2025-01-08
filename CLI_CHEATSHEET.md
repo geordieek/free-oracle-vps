@@ -163,16 +163,18 @@
   ```bash
   sudo ufw disable
   ```
-- **Check firewall rules:** ```bash
+- **Check firewall rules:**
+  ```bash
   sudo ufw status verbose
-
-````
+  ```
 
 ### Processes:
+
 - **Show running processes:**
+
   ```bash
   ps aux
-````
+  ```
 
 - **Kill a process:**
   ```bash
