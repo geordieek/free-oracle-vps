@@ -1,3 +1,14 @@
+- name: Ensure lsb-release is installed
+  apt:
+    name: lsb-release
+    state: present
+  tags: nginx
+
+- name: Explicitly gather facts
+  setup:
+    filter: ansible_distribution*
+  tags: nginx
+
 - name: Download NGINX GPG key
   shell:
     cmd: |
