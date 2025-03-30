@@ -18,7 +18,7 @@ To execute the playbook run:
 `ansible-playbook ansible/run.yml`
 
 You can use the --tags flag, to run only the selected roles (tags):
-`ansible-playbook ansible/run.yml --tags="harden,nginx,analytics"`
+`ansible-playbook run.yml --tags="harden,nginx,analytics"`
 
 ## Terraform
 
@@ -79,7 +79,6 @@ Remember that your router can cache DNS as well, so it can take a while to propa
 ## TODO:
 
 - Write some notes on `sshd`, `systemctl` & `ufw`
-- Organise terraform into its own folder
 
 ## Credits
 
