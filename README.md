@@ -53,6 +53,8 @@ You can get a nice VPS on the Oracle free tier, but they never have capacity for
 
 ### Server
 
+- If nginx is running but you can't access your website. You can reconfigure and restart it with `ansible-playbook run.yml --skip-tags user --tags nginx`
+
 There are some general server commands you may find useful in `CLI_CHEATSHEET.MD`
 
 ### DNS
@@ -79,6 +81,7 @@ Remember that your router can cache DNS as well, so it can take a while to propa
 ## TODO:
 
 - Write some notes on `sshd`, `systemctl` & `ufw`
+- setup tailscale (maybe headscale?)
 
 ## Credits
 
