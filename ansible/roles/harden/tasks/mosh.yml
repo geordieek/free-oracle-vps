@@ -1,0 +1,12 @@
+- name: Install mosh
+  import_role:
+    name: common_roles/install_latest
+  vars:
+    packages: "mosh"
+
+- name: Allow mosh UDP range
+  ufw:
+    state: enabled
+    rule: allow
+    port: "{{ ports.mosh_udp_min }}:{{ ports.mosh_udp_max }}"
+    proto: "udp"

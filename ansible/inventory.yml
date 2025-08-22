@@ -18,3 +18,5 @@ all:
       ssh: 2222
       http: 80
       https: 443
+      mosh_udp_min: 60000
+      mosh_udp_max: 61000

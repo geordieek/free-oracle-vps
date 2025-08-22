@@ -3,3 +3,6 @@
 
 - name: Configure ufw
   import_tasks: firewall.yml
+
+- name: Configure mosh
+  import_tasks: mosh.yml

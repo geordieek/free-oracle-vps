@@ -68,6 +68,18 @@ resource "oci_core_security_list" "vps" {
     }
   }
 
+  # Allow incoming mosh UDP range (60000-61000)
+  ingress_security_rules {
+    protocol    = 17          # UDP
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = false
+    udp_options {
+      min = 60000
+      max = 61000
+    }
+  }
+
   # Allow ICMP traffic for diagnostics (e.g., ping)
   ingress_security_rules {
     protocol    = 1 # ICMP
