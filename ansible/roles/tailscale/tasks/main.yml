@@ -1,0 +1,77 @@
+- name: Ensure prerequisites for installation are present
+  become: true
+  package:
+    name:
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Check if tailscale binary exists
+  stat:
+    path: "/usr/bin/tailscale"
+  register: tailscale_bin
+
+- name: Install Tailscale (official script)
+  become: true
+  shell: "curl -fsSL https://tailscale.com/install.sh | sh"
+  args:
+    warn: false
+  when: not tailscale_bin.stat.exists
+
+- name: Enable and start tailscaled
+  become: true
+  service:
+    name: tailscaled
+    enabled: true
+    state: started
+
+- name: Allow Tailscale UDP port 41641 through UFW (for NAT traversal)
+  become: true
+  ufw:
+    state: enabled
+    rule: allow
+    port: "41641"
+    proto: "udp"
+
+- name: Build tailscale up arguments
+  set_fact:
+    tailscale_up_args: >-
+      {{
+        (
+          [
+            '--hostname ' ~ (tailscale_hostname | default(inventory_hostname))
+          ]
+          +
+          ([ '--login-server ' ~ tailscale_login_server ] if (tailscale_login_server is defined and tailscale_login_server|length > 0) else [])
+          +
+          ([ '--accept-dns=false' ] if (tailscale_accept_dns is defined and not tailscale_accept_dns) else [])
+          +
+          ([ '--accept-routes' ] if (tailscale_accept_routes | default(false)) else [])
+          +
+          ([ '--advertise-exit-node' ] if (tailscale_advertise_exit_node | default(false)) else [])
+          +
+          (['--advertise-routes ' ~ (tailscale_advertise_routes | join(','))] if (tailscale_advertise_routes is defined and (tailscale_advertise_routes | length) > 0) else [])
+          +
+          (['--exit-node ' ~ tailscale_use_exit_node] if (tailscale_use_exit_node is defined and tailscale_use_exit_node|length > 0) else [])
+          +
+          (tailscale_extra_args if (tailscale_extra_args is defined) else [])
+        ]
+        | join(' ')
+      }}
+
+- name: Check Tailscale status
+  command: "tailscale status"
+  register: tailscale_status
+  changed_when: false
+  failed_when: false
+
+- name: Login to Tailscale
+  become: true
+  environment:
+    TS_AUTHKEY: "{{ tailscale_auth_key | default('') }}"
+  command: "tailscale up {{ tailscale_up_args }} {{ '--ssh' if tailscale_enable_ssh | default(false) else '' }}"
+  when:
+    - tailscale_auth_key is defined
+    - tailscale_auth_key | length > 0
+    - tailscale_status.rc != 0 or ('Logged out.' in (tailscale_status.stdout | default(''))) or ('Needs login' in (tailscale_status.stdout | default('')))

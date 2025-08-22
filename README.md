@@ -20,6 +20,28 @@ To execute the playbook run:
 You can use the --tags flag, to run only the selected roles (tags):
 `ansible-playbook run.yml --tags="harden,nginx,analytics"`
 
+### Tailscale
+
+Set the following in `ansible/.env.yml` to enable Tailscale auto-login during Ansible runs:
+
+```yaml
+# Tailscale settings
+tailscale_auth_key: "tskey-abcdef123..." # Use an ephemeral or reusable auth key
+tailscale_hostname: "{{ hostname | default('my-vps') }}" # optional
+tailscale_accept_dns: true
+tailscale_accept_routes: false
+tailscale_advertise_exit_node: false
+tailscale_advertise_routes: []
+tailscale_use_exit_node: ""
+tailscale_enable_ssh: false
+```
+
+Notes:
+
+- UDP 41641 is allowed in both UFW and OCI security list for peer connectivity.
+- Existing SSH (`{{ ports.ssh }}`) and Mosh UDP (60000-61000) remain allowed.
+- Enabling `tailscale_enable_ssh: true` lets you SSH over your tailnet.
+
 ## Terraform
 
 Run terraform commands from terraform folder.

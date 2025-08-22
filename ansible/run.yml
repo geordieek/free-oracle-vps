@@ -60,6 +60,11 @@
       tags:
         - nginx
 
+    - role: tailscale
+      become: true
+      tags:
+        - tailscale
+
     - role: welcome
       become: true
       tags:

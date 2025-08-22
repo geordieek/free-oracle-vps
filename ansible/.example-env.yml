@@ -17,3 +17,13 @@ nextcloud_password: "admin_pwd"
 # Uncomment and point to your stow-based dotfiles
 # repository to get them installed on your VPS
 # dotfiles_repo: "TODO"
+
+# Tailscale
+tailscale_auth_key: "tskey-abcdef123..."
+tailscale_hostname: "{{ hostname | default('my-vps') }}" # optional
+tailscale_accept_dns: true
+tailscale_accept_routes: false
+tailscale_advertise_exit_node: false
+tailscale_advertise_routes: []
+tailscale_use_exit_node: ""
+tailscale_enable_ssh: false

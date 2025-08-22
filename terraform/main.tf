@@ -92,6 +92,18 @@ resource "oci_core_security_list" "vps" {
     }
   }
 
+  # Allow incoming Tailscale/WireGuard UDP (41641)
+  ingress_security_rules {
+    protocol    = 17          # UDP
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = false
+    udp_options {
+      min = 41641
+      max = 41641
+    }
+  }
+
   # Allow ICMP traffic from within the CIDR block
   ingress_security_rules {
     protocol    = 1        # ICMP
