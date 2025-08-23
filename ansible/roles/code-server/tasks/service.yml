@@ -1,0 +1,20 @@
+- name: Create systemd service file
+  become: true
+  template:
+    src: code-server.service
+    dest: /etc/systemd/system/code-server.service
+    mode: '0644'
+
+- name: Enable and start code-server service
+  become: true
+  systemd:
+    name: code-server
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Restart code-server service
+  become: true
+  systemd:
+    name: code-server
+    state: restarted

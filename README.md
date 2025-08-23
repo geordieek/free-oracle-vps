@@ -7,6 +7,7 @@ The configuration includes:
 - Automated regular maintenance
 - Automated SSL certs
 - Analytics with Umami
+- Code-server (VS Code in browser)
 - Hardening: SSH, NGINX, firewall, fail2ban.
 - General software
 
@@ -20,21 +21,15 @@ To execute the playbook run:
 You can use the --tags flag, to run only the selected roles (tags):
 `ansible-playbook run.yml --tags="harden,nginx,analytics"`
 
+### Code-server
+
+You can access code-server at `https://code.your-domain.com`
+
+The password is set in `ansible/.env.yml` as `code_server_password`.
+
 ### Tailscale
 
-Set the following in `ansible/.env.yml` to enable Tailscale auto-login during Ansible runs:
-
-```yaml
-# Tailscale settings
-tailscale_auth_key: "tskey-abcdef123..." # Use an ephemeral or reusable auth key
-tailscale_hostname: "{{ hostname | default('my-vps') }}" # optional
-tailscale_accept_dns: true
-tailscale_accept_routes: false
-tailscale_advertise_exit_node: false
-tailscale_advertise_routes: []
-tailscale_use_exit_node: ""
-tailscale_enable_ssh: false
-```
+Set the tailscale envs from `ansible/.example-env.yml` in `ansible/.env.yml` to enable Tailscale auto-login during Ansible runs:
 
 Notes:
 

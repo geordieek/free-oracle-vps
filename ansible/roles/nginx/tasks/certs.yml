@@ -1,6 +1,6 @@
 - name: Run cert script # noqa: yaml
   # If you add more sites, you can add them to this script here to get certs, you can also run the script directly on server
-  command: "/usr/bin/certbot --nginx -n --agree-tos --redirect --expand --email {{ email }} --domains {{ domain }},umami.{{ domain }}"
+  command: '/usr/bin/certbot --nginx -n --agree-tos --redirect --expand --email {{ email }} --domains {{ domain }},umami.{{ domain }},code.{{ domain }}'
   changed_when: true
 
 - name: Keep certs updated
@@ -8,4 +8,4 @@
     name: update certs
     state: present
     special_time: monthly
-    job: "certbot --nginx renew"
+    job: 'certbot --nginx renew'

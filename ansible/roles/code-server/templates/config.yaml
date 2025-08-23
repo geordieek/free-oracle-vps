@@ -1,0 +1,6 @@
+bind-addr: 127.0.0.1:{{ service.code_server.port }}
+auth: password
+password: { { code_server_password } }
+cert: false
+user-data-dir: /home/{{ username }}/.local/share/code-server
+extensions-dir: /home/{{ username }}/.local/share/code-server/extensions

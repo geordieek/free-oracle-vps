@@ -1,0 +1,8 @@
+- name: Install code-server
+  import_tasks: install.yml
+
+- name: Configure code-server
+  import_tasks: config.yml
+
+- name: Setup systemd service
+  import_tasks: service.yml

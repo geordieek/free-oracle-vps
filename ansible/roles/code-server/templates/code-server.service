@@ -1,0 +1,14 @@
+[Unit]
+Description=code-server
+After=network.target
+
+[Service]
+Type=simple
+User={{ username }}
+WorkingDirectory=/home/{{ username }}
+Environment=PASSWORD={{ code_server_password }}
+ExecStart=/usr/bin/code-server --bind-addr 127.0.0.1:{{ service.code_server.port }} --auth password
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

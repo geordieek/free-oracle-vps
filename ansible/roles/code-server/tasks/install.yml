@@ -1,0 +1,6 @@
+- name: Install code-server using official install script
+  shell: |
+    curl -fsSL https://code-server.dev/install.sh | sh
+  args:
+    creates: /usr/bin/code-server
+  changed_when: true

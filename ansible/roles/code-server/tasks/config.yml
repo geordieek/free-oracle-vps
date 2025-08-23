@@ -1,0 +1,15 @@
+- name: Create code-server config directory
+  file:
+    path: '/home/{{ username }}/.config/code-server'
+    state: directory
+    mode: '0755'
+    owner: '{{ username }}'
+    group: '{{ username }}'
+
+- name: Configure code-server
+  template:
+    src: config.yaml
+    dest: '/home/{{ username }}/.config/code-server/config.yaml'
+    mode: '0644'
+    owner: '{{ username }}'
+    group: '{{ username }}'
