@@ -104,7 +104,7 @@ Remember that your router can cache DNS as well, so it can take a while to propa
 ## TODO:
 
 - Write some notes on `sshd`, `systemctl` & `ufw`
-- setup tailscale (maybe headscale?)
+- Add 2FA with 2fauth or authelia
 
 ## Credits
 
