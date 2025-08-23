@@ -21,11 +21,11 @@
     create: yes
   when: expose_code_server_tailscale | default(true)
 
-- name: Reload tailscaled to apply cert permissions
+- name: Restart tailscaled to apply cert permissions
   become: true
   service:
     name: tailscaled
-    state: reloaded
+    state: restarted
   when: expose_code_server_tailscale | default(true)
 
 - name: Ensure Tailscale cert exists for Tailscale hostname
