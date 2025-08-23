@@ -1,0 +1,28 @@
+server {
+    listen {{ ports.http }};
+    listen [::]:{{ ports.http }};
+    server_name {{ nginx_tls_domain | default(tailscale_hostname) }};
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen {{ ports.https }} ssl;
+    listen [::]:{{ ports.https }} ssl;
+    server_name {{ nginx_tls_domain | default(tailscale_hostname) }};
+
+    ssl_certificate /var/lib/tailscale/certs/{{ nginx_tls_domain | default(tailscale_hostname) }}.crt;
+    ssl_certificate_key /var/lib/tailscale/certs/{{ nginx_tls_domain | default(tailscale_hostname) }}.key;
+
+    location / {
+        proxy_pass          http://127.0.0.1:{{ port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+    }
+}
+
+

@@ -79,3 +79,11 @@
 - name: Configure Tailscale Serve for code-server (private over tailnet)
   become: true
   command: 'tailscale serve --bg http://127.0.0.1:{{ service.code_server.port }}'
+  when: expose_code_server_tailscale | default(true)
+
+- name: Generate Tailscale cert for tailscale hostname
+  become: true
+  when: expose_code_server_tailscale | default(true)
+  command: 'tailscale cert {{ tailscale_hostname }}'
+  args:
+    creates: '/var/lib/tailscale/certs/{{ tailscale_hostname }}.crt'

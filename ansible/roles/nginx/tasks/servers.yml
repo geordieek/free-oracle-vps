@@ -22,17 +22,36 @@
     dest: '/etc/nginx/sites-enabled/website'
     mode: 0644
 
-- name: Config proxy server for services
+- name: Config proxy server for umami
   vars:
-    subdom: '{{ item.subdomain }}'
-    port: '{{ item.port }}'
+    subdom: '{{ service.umami.subdomain }}'
+    port: '{{ service.umami.port }}'
   template:
     src: nginx-service
-    dest: '/etc/nginx/sites-enabled/{{ item.subdomain }}'
+    dest: '/etc/nginx/sites-enabled/{{ service.umami.subdomain }}'
     mode: 0644
-  loop: '{{ [ service.umami ] + ([ service.code_server ] if expose_code_server_public | default(false) else []) }}'
-  loop_control:
-    label: '{{ item.subdomain }}'
+
+- name: Config proxy server for code-server (public domain)
+  when: expose_code_server_public | default(false)
+  vars:
+    subdom: '{{ service.code_server.subdomain }}'
+    port: '{{ service.code_server.port }}'
+  template:
+    src: nginx-service
+    dest: '/etc/nginx/sites-enabled/{{ service.code_server.subdomain }}'
+    mode: 0644
+
+- name: Config proxy server for code-server (Tailscale domain)
+  when: expose_code_server_tailscale | default(true)
+  vars:
+    subdom: '{{ service.code_server.subdomain }}'
+    port: '{{ service.code_server.port }}'
+    nginx_use_tailscale_certs: true
+    nginx_tls_domain: '{{ tailscale_hostname }}'
+  template:
+    src: nginx-service-tailscale
+    dest: '/etc/nginx/sites-enabled/{{ service.code_server.subdomain }}-tailscale'
+    mode: 0644
 
 - name: Enable and restart nginx
   service:

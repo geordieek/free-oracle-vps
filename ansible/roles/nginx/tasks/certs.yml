@@ -2,6 +2,7 @@
   # If you add more sites, you can add them to this script here to get certs, you can also run the script directly on server
   command: "/usr/bin/certbot --nginx -n --agree-tos --redirect --expand --email {{ email }} --domains {{ domain }},umami.{{ domain }}{{ ',code.' ~ domain if expose_code_server_public | default(false) else '' }}"
   changed_when: true
+  when: not (expose_code_server_tailscale | default(true))
 
 - name: Keep certs updated
   cron:
@@ -9,3 +10,34 @@
     state: present
     special_time: monthly
     job: 'certbot --nginx renew'
+  when: not (expose_code_server_tailscale | default(true))
+
+- name: Ensure web user permitted for Tailscale cert fetch (optional)
+  become: true
+  lineinfile:
+    path: /etc/default/tailscaled
+    regexp: '^TS_PERMIT_CERT_UID='
+    line: 'TS_PERMIT_CERT_UID=www-data'
+    create: yes
+  when: expose_code_server_tailscale | default(true)
+
+- name: Reload tailscaled to apply cert permissions
+  become: true
+  service:
+    name: tailscaled
+    state: reloaded
+  when: expose_code_server_tailscale | default(true)
+
+- name: Ensure Tailscale cert exists for Tailscale hostname
+  become: true
+  command: 'tailscale cert {{ tailscale_hostname }}'
+  args:
+    creates: '/var/lib/tailscale/certs/{{ tailscale_hostname }}ts.net.crt'
+  when: expose_code_server_tailscale | default(true)
+
+- name: Reload nginx to pick up new certificates
+  service:
+    name: nginx
+    state: reloaded
+  when: expose_code_server_tailscale | default(true)
+  when: expose_code_server_tailscale | default(true)
