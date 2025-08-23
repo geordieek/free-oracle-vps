@@ -94,6 +94,17 @@ You can also try with a public resolver, eg.
 
 Remember that your router can cache DNS as well, so it can take a while to propagate.
 
+### Cloudflare (public + 2FA for code-server)
+
+- We use Cloudflare as reverse proxy for code server. `your-domain.com` stays public; only `code.your-domain.com` is gated with Cloudflare Access.
+- SSL:
+  - Cloudflare serves edge certs for `*.your-domain.com`.
+  - Origin certs (Let’s Encrypt) are issued by the nginx role; set `expose_code_server_public: true` in `ansible/.env.yml` and run the nginx role.
+- Access:
+  - App 1 (bypass): host `code.geordie.dev`, path `/.well-known/acme-challenge/*`, action Bypass → Everyone (for ACME).
+  - App 2 (protected): host `code.geordie.dev`, path `/`, action Allow → Include your email, Require OTP/MFA.
+- NGINX hardening: the `code` vhost includes an auto-generated Cloudflare IP allowlist, then `deny all` to prevent direct origin hits.
+
 ### Authenticating
 
 - `ansible_user` is set to `root`, otherwise it will default to whatever user you’re logged in as on your local machine.

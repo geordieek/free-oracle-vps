@@ -36,6 +36,7 @@
   vars:
     subdom: '{{ service.code_server.subdomain }}'
     port: '{{ service.code_server.port }}'
+    nginx_cloudflare_allowlist: true
   template:
     src: nginx-service
     dest: '/etc/nginx/sites-enabled/{{ service.code_server.subdomain }}'

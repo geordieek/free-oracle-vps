@@ -3,6 +3,14 @@ server {
     listen [::]:{{ ports.http }};
     server_name {{ subdom }}.{{ domain }};
 
+    {# Optional: restrict direct origin access to Cloudflare only #}
+    {% if nginx_cloudflare_allowlist | default(false) %}
+    # Trust original client IP from Cloudflare (set in included file)
+    # Cloudflare networks (auto-generated include)
+    include /etc/nginx/conf.d/cloudflare-ips.conf;
+    deny all;
+    {% endif %}
+
     location / {
         proxy_pass          http://127.0.0.1:{{ port }};
         proxy_set_header Host $host;

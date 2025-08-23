@@ -4,8 +4,8 @@
 - name: Configure servers
   import_tasks: servers.yml
 
-- name: Configure nginx
-  import_tasks: config.yml
-
 - name: Create certs and keep them updated
   import_tasks: certs.yml
+
+- name: Configure nginx
+  import_tasks: config.yml
