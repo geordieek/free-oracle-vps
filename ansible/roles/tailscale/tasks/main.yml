@@ -76,10 +76,11 @@
     - tailscale_auth_key | length > 0
     - tailscale_status.rc != 0 or ('Logged out.' in (tailscale_status.stdout | default(''))) or ('Needs login' in (tailscale_status.stdout | default('')))
 
-- name: Configure Tailscale Serve for code-server (private over tailnet)
-  become: true
-  command: 'tailscale serve --bg http://127.0.0.1:{{ service.code_server.port }}'
-  when: expose_code_server_tailscale | default(true)
+# Uncomment this if you want to use Tailscale Serve instead of nginx
+# - name: Configure Tailscale Serve for code-server (private over tailnet)
+#   become: true
+#   command: 'tailscale serve --bg http://127.0.0.1:{{ service.code_server.port }}'
+#   when: expose_code_server_tailscale | default(true)
 
 - name: Generate Tailscale cert for tailscale hostname
   become: true
