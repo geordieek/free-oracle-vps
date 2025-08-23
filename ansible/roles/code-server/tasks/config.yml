@@ -6,6 +6,14 @@
     owner: '{{ username }}'
     group: '{{ username }}'
 
+- name: Create User settings directory
+  file:
+    path: '/home/{{ username }}/.local/share/code-server/User'
+    state: directory
+    mode: '0755'
+    owner: '{{ username }}'
+    group: '{{ username }}'
+
 - name: Configure code-server
   template:
     src: config.yaml
@@ -13,3 +21,11 @@
     mode: '0644'
     owner: '{{ username }}'
     group: '{{ username }}'
+
+- name: Copy VS Code settings
+  copy:
+    src: settings.json
+    dest: '/home/{{ username }}/.local/share/code-server/User/settings.json'
+    owner: '{{ username }}'
+    group: '{{ username }}'
+    mode: '0644'

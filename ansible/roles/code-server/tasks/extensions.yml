@@ -1,0 +1,25 @@
+# TODO: These don't currently work, just leaving them here as a reminder
+
+# - name: Install Neovim extension
+#   shell: |
+#     code-server --install-extension asvetliakov.vscode-neovim
+
+# - name: Install Which Key extension
+#   shell: |
+#     code-server --install-extension vspacecode.whichkey
+
+# - name: Install Prettier extension
+#   shell: |
+#     code-server --install-extension esbenp.prettier-vscode
+
+# - name: Install SuperMaven extension
+#   shell: |
+#     code-server --install-extension supermaven.supermaven
+
+# - name: Install GitHub Pull Requests extension
+#   shell: |
+#     code-server --install-extension github.vscode-pull-request-github
+
+# - name: Install Todo Tree extension
+#   shell: |
+#     code-server --install-extension gruntfuggly.todo-tree
