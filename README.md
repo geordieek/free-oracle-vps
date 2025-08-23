@@ -27,6 +27,8 @@ You can access code-server at `https://code.your-domain.com`
 
 The password is set in `ansible/.env.yml` as `code_server_password`.
 
+Copy your VS Code settings to `ansible/roles/code-server/files/settings.json` to copy them to the server.
+
 ### Tailscale
 
 Set the tailscale envs from `ansible/.example-env.yml` in `ansible/.env.yml` to enable Tailscale auto-login during Ansible runs:
