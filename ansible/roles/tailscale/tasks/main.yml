@@ -9,12 +9,12 @@
 
 - name: Check if tailscale binary exists
   stat:
-    path: "/usr/bin/tailscale"
+    path: '/usr/bin/tailscale'
   register: tailscale_bin
 
 - name: Install Tailscale (official script)
   become: true
-  shell: "curl -fsSL https://tailscale.com/install.sh | sh"
+  shell: 'curl -fsSL https://tailscale.com/install.sh | sh'
   args:
     warn: false
   when: not tailscale_bin.stat.exists
@@ -31,8 +31,8 @@
   ufw:
     state: enabled
     rule: allow
-    port: "41641"
-    proto: "udp"
+    port: '41641'
+    proto: 'udp'
 
 - name: Build tailscale up arguments
   set_fact:
@@ -56,12 +56,12 @@
           (['--exit-node ' ~ tailscale_use_exit_node] if (tailscale_use_exit_node is defined and tailscale_use_exit_node|length > 0) else [])
           +
           (tailscale_extra_args if (tailscale_extra_args is defined) else [])
-        ]
+        )
         | join(' ')
       }}
 
 - name: Check Tailscale status
-  command: "tailscale status"
+  command: 'tailscale status'
   register: tailscale_status
   changed_when: false
   failed_when: false
@@ -75,3 +75,7 @@
     - tailscale_auth_key is defined
     - tailscale_auth_key | length > 0
     - tailscale_status.rc != 0 or ('Logged out.' in (tailscale_status.stdout | default(''))) or ('Needs login' in (tailscale_status.stdout | default('')))
+
+- name: Configure Tailscale Serve for code-server (private over tailnet)
+  become: true
+  command: 'tailscale serve --bg http://127.0.0.1:{{ service.code_server.port }}'

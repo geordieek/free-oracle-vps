@@ -30,9 +30,7 @@
     src: nginx-service
     dest: '/etc/nginx/sites-enabled/{{ item.subdomain }}'
     mode: 0644
-  loop:
-    - '{{ service.umami }}'
-    - '{{ service.code_server }}'
+  loop: '{{ [ service.umami ] + ([ service.code_server ] if expose_code_server_public | default(false) else []) }}'
   loop_control:
     label: '{{ item.subdomain }}'
 

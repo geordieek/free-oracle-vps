@@ -20,6 +20,7 @@ nextcloud_password: 'admin_pwd'
 
 # Code-server
 code_server_password: 'your_secure_password_here'
+expose_code_server_public: false # set to true to expose code-server to the public internet, make sure it's secured.
 
 # Tailscale
 tailscale_auth_key: 'tskey-abcdef123...'
