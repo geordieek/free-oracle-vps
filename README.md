@@ -23,11 +23,15 @@ You can use the --tags flag, to run only the selected roles (tags):
 
 ### Code-server
 
-You can access code-server at `https://code.your-domain.com`
+It is recommended to use Tailscale to access code-server. This is the default behaviour and set with `expose_code_server_tailscale: true` in `ansible/.env.yml`. You will then be able to access your code-server at your tailscale hostname eg. `my-server.tail423678ad.ts.net`.
 
-The password is set in `ansible/.env.yml` as `code_server_password`.
+If you set `expose_code_server_public: true` in `ansible/.env.yml` and configure your DNS records, you can access code-server at `https://code.your-domain.com`. This is not recommended as it is currently only secured with a password.
+
+The code-server password is set in `ansible/.env.yml` as `code_server_password`.
 
 Copy your VS Code settings to `ansible/roles/code-server/files/settings.json` to copy them to the server.
+
+NOTE: If you're on an iPad, you may have issues accessing the tailscale hostname due to iOS DNS resolution intercepting tailscale. See this issue here: https://github.com/tailscale/tailscale/issues/12563. The provided fix worked for me.
 
 ### Tailscale
 
