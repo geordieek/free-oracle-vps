@@ -1,34 +1,34 @@
 ---
-domain: 'your.domain.com'
+domain: "your.domain.com"
 # Also set your VPS's IP if using Cloudflare
 # ip: 192.168.1.1
 
 # Email address for SSL cert and Gitea instance
-email: 'your@email.address'
+email: "your@email.address"
 
 # Used when connecting to server with password-based SSH instead of key-based, note passwordless auth is removed by harden role
-ssh_pass: 'MoeClub.org' # Default password for SSH after installing debian from MoeClub
+ssh_pass: "MoeClub.org" # Default password for SSH after installing debian from MoeClub
 
-nextcloud_username: 'admin_user'
-nextcloud_password: 'admin_pwd'
+nextcloud_username: "admin_user"
+nextcloud_password: "admin_pwd"
 # Uncomment and set your own, if left blank, there is a default, but it won't work if you run with tags
-# ssh_key: "~/.ssh/[YOUR_PRIVATE_KEY]"
+# ssh_key: '~/.ssh/[YOUR_PRIVATE_KEY]'
 
 # Uncomment and point to your stow-based dotfiles
 # repository to get them installed on your VPS
-# dotfiles_repo: "TODO"
+# dotfiles_repo: 'TODO'
 
 # Code-server
-code_server_password: 'your_secure_password_here'
+code_server_password: "your_secure_password_here"
 expose_code_server_public: false # set to true to expose code-server to the public internet, make sure it's secured.
 expose_code_server_tailscale: true # expose code-server to the tailnet.
 
 # Tailscale
-tailscale_auth_key: 'tskey-abcdef123...'
-tailscale_hostname: "{{ hostname | default('my-vps') }}" # optional
+tailscale_auth_key: "tskey-abcdef123..."
+tailscale_hostname: "myserver.tail12345.ts.net"
 tailscale_accept_dns: true
 tailscale_accept_routes: false
 tailscale_advertise_exit_node: false
 tailscale_advertise_routes: []
-tailscale_use_exit_node: ''
-tailscale_enable_ssh: false
+tailscale_use_exit_node: ""
+tailscale_enable_ssh: true
