@@ -50,14 +50,13 @@
   shell: |
     docker exec code-server bash -lc '
       set -euo pipefail
-      desired_version="v0.10.2"
       if ! command -v nvim >/dev/null 2>&1 || ! nvim --version | head -n1 | grep -Eq "NVIM v0\.(9|10)"; then
         tmpdir=$(mktemp -d)
         cd "$tmpdir"
-        curl -fsSL -o nvim-linux64.tar.gz "https://github.com/neovim/neovim/releases/download/${desired_version}/nvim-linux64.tar.gz"
-        tar -xzf nvim-linux64.tar.gz
+        curl -fsSL -o nvim-linux-arm64.tar.gz "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
+        tar -xzf nvim-linux-arm64.tar.gz
         sudo rm -rf /opt/nvim
-        sudo mv nvim-linux64 /opt/nvim
+        sudo mv nvim-linux-arm64 /opt/nvim
         sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
         rm -rf "$tmpdir"
       fi
