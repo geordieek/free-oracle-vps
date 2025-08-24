@@ -25,13 +25,18 @@ You can use the --tags flag, to run only the selected roles (tags):
 
 It is recommended to use Tailscale to access code-server. This is the default behaviour and set with `expose_code_server_tailscale: true` in `ansible/.env.yml`. You will then be able to access your code-server at your tailscale hostname eg. `my-server.tail423678ad.ts.net`.
 
-If you set `expose_code_server_public: true` in `ansible/.env.yml` and configure your DNS records, you can access code-server at `https://code.your-domain.com`. This is not recommended as it is currently only secured with a password.
+If you set `expose_code_server_public: true` in `ansible/.env.yml` and configure your DNS records, you can access code-server at `https://code.your-domain.com`. In the current config, nginx only serves `code.your-domain.com` when a Cloudflare header is present, and requires a Cloudflare header to access it, so you will need to either setup Cloudflare proxies (free), change it or use Tailscale.
 
 The code-server password is set in `ansible/.env.yml` as `code_server_password`.
 
 Copy your VS Code settings to `ansible/roles/code-server/files/settings.json` to copy them to the server.
 
 NOTE: If you're on an iPad, you may have issues accessing the tailscale hostname due to iOS DNS resolution intercepting tailscale. See this issue here: https://github.com/tailscale/tailscale/issues/12563. The provided fix worked for me.
+
+### Cloudflare
+
+- If you want to expose code server publicly, I strongly suggest adding extra security beyond just a password. This setup uses Cloudflare Access to gate access to code server, as such, you will need to setup cloudflare proxies to access it.
+- The `code` subdomain is proxied and gated by Cloudflare Access, and nginx requires a Cloudflare header to access it.
 
 ### Tailscale
 
@@ -101,8 +106,8 @@ Remember that your router can cache DNS as well, so it can take a while to propa
   - Cloudflare serves edge certs for `*.your-domain.com`.
   - Origin certs (Let’s Encrypt) are issued by the nginx role; set `expose_code_server_public: true` in `ansible/.env.yml` and run the nginx role.
 - Access:
-  - App 1 (bypass): host `code.geordie.dev`, path `/.well-known/acme-challenge/*`, action Bypass → Everyone (for ACME).
-  - App 2 (protected): host `code.geordie.dev`, path `/`, action Allow → Include your email, Require OTP/MFA.
+  - App 1 (bypass): host `code.your-domain.dev`, path `/.well-known/acme-challenge/*`, action Bypass → Everyone (for ACME).
+  - App 2 (protected): host `code.your-domain.dev`, path `/`, action Allow → Include your email, Require OTP/MFA.
 - NGINX hardening: the `code` vhost includes an auto-generated Cloudflare IP allowlist, then `deny all` to prevent direct origin hits.
 
 ### Authenticating
