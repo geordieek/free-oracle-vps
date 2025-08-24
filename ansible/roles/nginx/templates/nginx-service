@@ -8,7 +8,8 @@ server {
     # Trust original client IP from Cloudflare (set in included file)
     # Cloudflare networks (auto-generated include)
     include /etc/nginx/conf.d/cloudflare-ips.conf;
-    deny all;
+    # Block non-Cloudflare requests by requiring a Cloudflare header
+    if ($http_cf_ray = "") { return 403; }
     {% endif %}
 
     location / {
