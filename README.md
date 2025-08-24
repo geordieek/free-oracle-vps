@@ -25,7 +25,8 @@ You can use the --tags flag, to run only the selected roles (tags):
 
 It is recommended to use Tailscale to access code-server. This is the default behaviour and set with `expose_code_server_tailscale: true` in `ansible/.env.yml`. You will then be able to access your code-server at your tailscale hostname eg. `my-server.tail423678ad.ts.net`.
 
-If you set `expose_code_server_public: true` in `ansible/.env.yml` and configure your DNS records, you can access code-server at `https://code.your-domain.com`. In the current config, nginx only serves `code.your-domain.com` when a Cloudflare header is present, and requires a Cloudflare header to access it, so you will need to either setup Cloudflare proxies (free), change it or use Tailscale.
+If you set `expose_code_server_public: true` in `ansible/.env.yml` and configure your DNS records, you can access code-server at `https://code.your-domain.com`.
+In the current config, Nginx only serves `code.your-domain.com` when the request comes from Cloudflare IPs (IP allowlist + deny all). Direct origin hits return 403, so you must proxy through Cloudflare (or use Tailscale).
 
 The code-server password is set in `ansible/.env.yml` as `code_server_password`.
 
@@ -35,8 +36,9 @@ NOTE: If you're on an iPad, you may have issues accessing the tailscale hostname
 
 ### Cloudflare
 
-- If you want to expose code server publicly, I strongly suggest adding extra security beyond just a password. This setup uses Cloudflare Access to gate access to code server, as such, you will need to setup cloudflare proxies to access it.
-- The `code` subdomain is proxied and gated by Cloudflare Access, and nginx requires a Cloudflare header to access it.
+- If you want to expose code-server publicly, add Cloudflare Access (this repo expects it), or remove at your own risk.
+- The `code` subdomain is proxied and gated by Cloudflare Access. Nginx allows only Cloudflare IPs (allowlist + deny all); direct origin is 403.
+  — Nginx forwards real client IP to the app via `X-Real-IP: CF-Connecting-IP`.
 
 ### Tailscale
 
