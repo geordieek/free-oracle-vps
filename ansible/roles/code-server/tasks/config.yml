@@ -1,31 +1,35 @@
 - name: Create code-server config directory
   file:
-    path: '/home/{{ username }}/.config/code-server'
+    path: "/home/{{ username }}/.config/code-server"
     state: directory
-    mode: '0755'
-    owner: '{{ username }}'
-    group: '{{ username }}'
+    mode: "0755"
+    owner: "{{ username }}"
+    group: "{{ username }}"
 
 - name: Create User settings directory
   file:
-    path: '/home/{{ username }}/.local/share/code-server/User'
+    path: "/home/{{ username }}/.local/share/code-server/User"
     state: directory
-    mode: '0755'
-    owner: '{{ username }}'
-    group: '{{ username }}'
+    mode: "0755"
+    owner: "{{ username }}"
+    group: "{{ username }}"
 
 - name: Configure code-server
   template:
     src: config.yaml
-    dest: '/home/{{ username }}/.config/code-server/config.yaml'
-    mode: '0644'
-    owner: '{{ username }}'
-    group: '{{ username }}'
+    dest: "/home/{{ username }}/.config/code-server/config.yaml"
+    mode: "0644"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+  notify:
+    - Restart code-server container
 
 - name: Copy VS Code settings
   copy:
     src: settings.json
-    dest: '/home/{{ username }}/.local/share/code-server/User/settings.json'
-    owner: '{{ username }}'
-    group: '{{ username }}'
-    mode: '0644'
+    dest: "/home/{{ username }}/.local/share/code-server/User/settings.json"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0644"
+  notify:
+    - Restart code-server container

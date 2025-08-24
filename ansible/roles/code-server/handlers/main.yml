@@ -1,0 +1,6 @@
+---
+- name: Restart code-server container
+  community.docker.docker_container:
+    name: code-server
+    state: started
+    restart: true

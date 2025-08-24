@@ -6,6 +6,7 @@
 
 - name: Setup systemd service
   import_tasks: service.yml
+  when: code_server_system_service_enabled | default(false)
 
   # TODO: This currently doesn't work, the shell can't find the extensions - only works from within the code-server integrated terminal
 # - name: Install VS Code extensions

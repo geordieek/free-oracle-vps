@@ -1,6 +1,68 @@
-- name: Install code-server using official install script
+- name: Include Docker role
+  ansible.builtin.include_role:
+    name: common_roles/docker
+
+- name: Create code-server data directory
+  file:
+    path: "/home/{{ username }}/code-server"
+    state: directory
+    owner: "{{ username }}"
+    mode: "0755"
+
+- name: Get UID for {{ username }}
+  command: "id -u {{ username }}"
+  register: code_server_uid_cmd
+  changed_when: false
+
+- name: Get GID for {{ username }}
+  command: "id -g {{ username }}"
+  register: code_server_gid_cmd
+  changed_when: false
+
+- name: Deploy secure code-server container
+  docker_container:
+    name: code-server
+    image: codercom/code-server:latest
+    restart_policy: unless-stopped
+    recreate: true
+    command: "/home/coder/projects"
+    ports:
+      - "127.0.0.1:{{ service.code_server.port }}:8080"
+    volumes:
+      - "/home/{{ username }}/code-server:/home/coder/projects"
+      - "/home/{{ username }}/.config/code-server:/home/coder/.config/code-server"
+      - "/home/{{ username }}/.local/share/code-server:/home/coder/.local/share/code-server"
+    env:
+      PASSWORD: "{{ code_server_password }}"
+      DOCKER_USER: "{{ username }}"
+    user: "{{ code_server_uid_cmd.stdout }}:{{ code_server_gid_cmd.stdout }}"
+    # no-new-privileges blocks fixuid/sudo in the official image; omit to allow user switching
+    # Keep default capabilities; entrypoint uses sudo/fixuid which needs capabilities
+    # Allow writes inside container; user data and config are mounted as volumes
+    read_only: false
+    tmpfs:
+      - /tmp
+    network_mode: "bridge"
+  register: code_server_container
+  changed_when: code_server_container.changed
+
+- name: Ensure Neovim available inside container
   shell: |
-    curl -fsSL https://code-server.dev/install.sh | sh
+    docker exec code-server bash -lc '
+      set -euo pipefail
+      desired_version="v0.10.2"
+      if ! command -v nvim >/dev/null 2>&1 || ! nvim --version | head -n1 | grep -Eq "NVIM v0\.(9|10)"; then
+        tmpdir=$(mktemp -d)
+        cd "$tmpdir"
+        curl -fsSL -o nvim-linux64.tar.gz "https://github.com/neovim/neovim/releases/download/${desired_version}/nvim-linux64.tar.gz"
+        tar -xzf nvim-linux64.tar.gz
+        sudo rm -rf /opt/nvim
+        sudo mv nvim-linux64 /opt/nvim
+        sudo ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim
+        rm -rf "$tmpdir"
+      fi
+    '
   args:
-    creates: /usr/bin/code-server
-  changed_when: true
+    executable: /bin/bash
+  register: ensure_nvim
+  changed_when: false
